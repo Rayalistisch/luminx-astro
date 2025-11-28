@@ -1,0 +1,20 @@
+---
+import PreloaderBridge from '../vue/layout/PreloaderBridge.vue';
+import '../styles/global.css'; // mag óók hier, dan hoef je het niet per page te doen
+---
+
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>LuminX</title>
+  </head>
+
+  <body class="bg-black text-amber-50">
+    <!-- Vue preloader -->
+    <PreloaderBridge client:load />
+
+    <slot />
+  </body>
+</html>
