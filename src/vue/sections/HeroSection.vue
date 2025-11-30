@@ -5,43 +5,23 @@
   >
     <!-- Background -->
     <div
-      class="absolute inset-0 bg-cover bg-center sm:bg-fixed"
-      :style="{
-        backgroundImage:
-          'linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0.69) 35%, rgba(0,0,0,1)), url(/dark-background.jpg)',
-        transform: 'scale(' + (1 + scrollY * scaleFactor) + ')',
-        filter: 'saturate(1.05) contrast(1.05) brightness(0.9)',
-      }"
+      class="absolute inset-0 bg-cover bg-center sm:bg-fixed will-change-transform"
+      :style="backgroundStyle"
     />
 
     <!-- moving smoke -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
       <div
         class="absolute -left-40 bottom-[-10%] w-[60vw] h-[60vw] rounded-full blur-3xl"
-        :style="{
-          background:
-            'radial-gradient(circle at 30% 40%, rgba(248,250,252,0.55), transparent 60%)',
-          animation: 'smokeDriftSlow 48s ease-in-out infinite',
-          opacity: heroFogIntensity,
-        }"
+        :style="smokeStyle1"
       />
       <div
         class="absolute -right-40 top-[-10%] w-[55vw] h-[55vw] rounded-full blur-3xl"
-        :style="{
-          background:
-            'radial-gradient(circle at 70% 30%, rgba(249,250,251,0.45), transparent 60%)',
-          animation: 'smokeDriftSlowAlt 52s ease-in-out infinite',
-          opacity: heroFogIntensity * 0.9,
-        }"
+        :style="smokeStyle2"
       />
       <div
         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[35vw] h-[35vw] rounded-full blur-3xl"
-        :style="{
-          background:
-            'radial-gradient(circle at 50% 40%, rgba(248,250,252,0.35), transparent 70%)',
-          animation: 'smokeDriftSlow 60s linear infinite',
-          opacity: heroFogIntensity * 0.8,
-        }"
+        :style="smokeStyle3"
       />
     </div>
 
@@ -69,24 +49,15 @@
       </p>
 
       <h1
-        class="text-5xl md:text-7xl lg:text-8xl font-light tracking-[0.35em] mb-6"
-        :style="{
-          letterSpacing: '0.35em',
-          opacity: 1 - scrollY * 0.002,
-          transform: 'translateY(' + scrollY * 0.4 + 'px)',
-          textShadow:
-            '0 0 18px rgba(251,191,36,0.35), 0 0 40px rgba(251,191,36,0.25)',
-        }"
+        class="text-5xl md:text-7xl lg:text-8xl font-light tracking-[0.35em] mb-6 will-change-transform"
+        :style="titleStyle"
       >
         LuminX
       </h1>
 
       <p
-        class="text-sm md:text-base tracking-[0.35em] text-amber-200/90 mb-6 uppercase"
-        :style="{
-          opacity: 1 - scrollY * 0.002,
-          transform: 'translateY(' + scrollY * 0.25 + 'px)',
-        }"
+        class="text-sm md:text-base tracking-[0.35em] text-amber-200/90 mb-6 uppercase will-change-transform"
+        :style="subtitleStyle"
       >
         A Story About A Self Taught Marketeer
       </p>
@@ -105,8 +76,8 @@
 
     <!-- scroll indicator -->
     <div
-      class="absolute bottom-10 left-1/2 -translate-x-1/2"
-      :style="{ opacity: 1 - scrollY * 0.01 }"
+      class="absolute bottom-10 left-1/2 -translate-x-1/2 will-change-opacity"
+      :style="{ opacity: 1 - clampedScroll * 0.01 }"
     >
       <div
         class="w-6 h-10 border border-amber-200/70 rounded-full flex justify-center items-start"
@@ -118,9 +89,102 @@
 </template>
 
 <script setup>
+import { computed, onMounted, ref, onBeforeUnmount } from 'vue';
+
 const props = defineProps({
   scrollY: { type: Number, required: true },
   scaleFactor: { type: Number, required: true },
   heroFogIntensity: { type: Number, required: true },
+});
+
+const isMobile = ref(false);
+
+const updateIsMobile = () => {
+  if (typeof window === 'undefined') return;
+  isMobile.value = window.matchMedia('(max-width: 768px)').matches;
+};
+
+onMounted(() => {
+  updateIsMobile();
+  window.addEventListener('resize', updateIsMobile);
+});
+
+onBeforeUnmount(() => {
+  if (typeof window === 'undefined') return;
+  window.removeEventListener('resize', updateIsMobile);
+});
+
+// clamp scroll zodat waardes niet bizar groot worden
+const clampedScroll = computed(() => Math.min(props.scrollY, 400));
+
+const backgroundStyle = computed(() => {
+  const base = {
+    backgroundImage:
+      'linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0.69) 35%, rgba(0,0,0,1)), url(/dark-background.jpg)',
+    filter: 'saturate(1.05) contrast(1.05) brightness(0.9)',
+  };
+
+  // Op mobiel geen extra schaal = veel smoother scroll
+  if (!isMobile.value) {
+    base.transform = `scale(${1 + clampedScroll.value * props.scaleFactor})`;
+  }
+
+  return base;
+});
+
+// Smoke: animatie uit of zachter op mobiel
+const smokeBase1 =
+  'radial-gradient(circle at 30% 40%, rgba(248,250,252,0.55), transparent 60%)';
+const smokeBase2 =
+  'radial-gradient(circle at 70% 30%, rgba(249,250,251,0.45), transparent 60%)';
+const smokeBase3 =
+  'radial-gradient(circle at 50% 40%, rgba(248,250,252,0.35), transparent 70%)';
+
+const smokeStyle1 = computed(() => ({
+  background: smokeBase1,
+  opacity: (isMobile.value ? 0.4 : 1) * props.heroFogIntensity,
+  animation: isMobile.value ? 'none' : 'smokeDriftSlow 48s ease-in-out infinite',
+}));
+
+const smokeStyle2 = computed(() => ({
+  background: smokeBase2,
+  opacity: (isMobile.value ? 0.35 : 0.9) * props.heroFogIntensity,
+  animation: isMobile.value ? 'none' : 'smokeDriftSlowAlt 52s ease-in-out infinite',
+}));
+
+const smokeStyle3 = computed(() => ({
+  background: smokeBase3,
+  opacity: (isMobile.value ? 0.3 : 0.8) * props.heroFogIntensity,
+  animation: isMobile.value ? 'none' : 'smokeDriftSlow 60s linear infinite',
+}));
+
+const titleStyle = computed(() => {
+  if (isMobile.value) {
+    // Op mobiel: geen wilde scroll-parallax, gewoon stabiel
+    return {
+      letterSpacing: '0.35em',
+      textShadow:
+        '0 0 18px rgba(251,191,36,0.35), 0 0 40px rgba(251,191,36,0.25)',
+    };
+  }
+
+  return {
+    letterSpacing: '0.35em',
+    opacity: 1 - clampedScroll.value * 0.002,
+    transform: `translateY(${clampedScroll.value * 0.4}px)`,
+    textShadow:
+      '0 0 18px rgba(251,191,36,0.35), 0 0 40px rgba(251,191,36,0.25)',
+  };
+});
+
+const subtitleStyle = computed(() => {
+  if (isMobile.value) {
+    return {};
+  }
+
+  return {
+    opacity: 1 - clampedScroll.value * 0.002,
+    transform: `translateY(${clampedScroll.value * 0.25}px)`,
+  };
 });
 </script>
