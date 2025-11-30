@@ -3,7 +3,7 @@
     class="fixed top-0 left-0 right-0 z-40 bg-black/40 backdrop-blur-md border-b border-amber-900/40"
   >
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-      <!-- LOGO -->
+      <!-- LOGO website -->
       <a href="/" class="flex items-center gap-3 group">
         <img
           src="/logo-luminx.png"
