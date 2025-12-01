@@ -136,13 +136,9 @@
               ></span>
               <span class="relative flex items-center gap-2">
                 <span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-300/90"></span>
-                {{ isPaused ? 'Resume trailer' : 'Pause trailer' }}
+                {{ isPaused ? 'LuminX AI' : 'LuminX AI' }}
               </span>
             </button>
-
-            <span class="text-[10px] md:text-[11px] tracking-[0.22em] uppercase text-amber-300/70">
-              Sequence loopt automatisch · ~3 sec per chapter
-            </span>
           </div>
         </div>
       </section>
@@ -225,12 +221,11 @@ import {
 const scenes = [
   {
     id: 'spark',
-    tag: 'Scene I',
     label: 'The spark',
     line1: 'In een wereld vol standaard templates,',
     line2: 'ontstaat één rare zijweg.',
     caption:
-      'Een performance marketeer die niet stopt bij campagnes, maar doortrekt naar tooling, data en configurators.',
+      'Een performance marketeer die niet stopt bij campagnes, maar doortrekt naar tooling, data en custom dashboards.',
     sequenceLabel: 'Waar het allemaal begint.',
     video: '/videos/scene-4.mp4',
     themeClass: 'scene-theme-spark',
@@ -242,10 +237,9 @@ const scenes = [
   },
   {
     id: 'motion',
-    tag: 'Scene II',
     label: 'Campaigns in motion',
-    line1: 'Campagnes draaien als machines,',
-    line2: 'maar onder de motorkap broeit iets.',
+    line1: 'Merkversterkende campagnes,',
+    line2: 'Compleet volgens het AI tijdperk.',
     caption:
       'Feeds, shopping, remarketing. Alles beweegt, maar het systeem erachter vraagt om iets slimmers dan nog een dashboard.',
     sequenceLabel: 'Campagnes als grondstof.',
@@ -259,12 +253,11 @@ const scenes = [
   },
   {
     id: 'build',
-    tag: 'Scene III',
     label: 'The build',
     line1: 'Code, UX en data',
     line2: 'vinden elkaar in nieuwe interfaces.',
     caption:
-      'Productconfigurators, interne tools en AI-flows. Eerst maatwerk voor één case, dan blauwdruk voor meer.',
+      'Doordachte campagnes in een nieuw tijdperk, interne tools en AI-flows. Eerst maatwerk voor één case, dan blauwdruk voor meer.',
     sequenceLabel: 'De eerste echte bouwblokken.',
     video: '/videos/scene-4.mp4',
     themeClass: 'scene-theme-build',
@@ -276,12 +269,11 @@ const scenes = [
   },
   {
     id: 'playground',
-    tag: 'Scene IV',
     label: 'The playground',
     line1: 'En dan, langzaam,',
     line2: 'wordt het een eigen wereld.',
     caption:
-      'Geen façade van een agency-site, maar een levende playground. Waar experimenten blijven hangen als producten.',
+      'Geen standaard meetings van een agency, maar een levende playground. Waar experimenten blijven hangen als producten.',
     sequenceLabel: 'De plek waar alles samenkomt.',
     video: '/videos/scene-4.mp4',
     themeClass: 'scene-theme-playground',
@@ -293,7 +285,7 @@ const scenes = [
   },
 ];
 
-const SCENE_DURATION = 3000; // ~3 sec per scene
+const SCENE_DURATION = 6000; // ~3 sec per scene
 const audioSrc = '/audio/luminx-voiceover1.mp3';
 
 const currentSceneIndex = ref(0);
