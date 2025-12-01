@@ -1,16 +1,8 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import JournalView from '../vue/views/JournalView.vue';
-import HomeView from '../vue/views/JournalView.vue';
 ---
 
-<html lang="nl">
-  <head>
-    <meta charset="utf-8" />
-    <title>LuminX</title>
-  </head>
-  <body class="bg-black text-amber-50">
-    <!-- Vue island -->
-    <JournalView client:load />
-  </body>
-</html>
+<BaseLayout>
+  <JournalView client:load />
+</BaseLayout>

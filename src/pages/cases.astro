@@ -1,15 +1,9 @@
 ---
-import '../styles/global.css';
-import ServicesView from '../vue/views/CasesView.vue';
+import AboutView from '../vue/views/AboutView.vue';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CasesView from '../vue/views/CasesView.vue';
 ---
 
-<html lang="nl">
-  <head>
-    <meta charset="utf-8" />
-    <title>LuminX</title>
-  </head>
-  <body class="bg-black text-amber-50">
-    <!-- Vue island -->
-    <ServicesView client:load />
-  </body>
-</html>
+<BaseLayout>
+  <CasesView client:load />
+</BaseLayout>
